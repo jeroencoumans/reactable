@@ -13,7 +13,7 @@ export class Table extends React.Component {
         super(props);
 
         this.state = {
-            currentPage: 0,
+            currentPage: props.currentPage || 0,
             currentSort: {
                 column: null,
                 direction: this.props.defaultSortDescending ? -1 : 1
@@ -112,7 +112,8 @@ export class Table extends React.Component {
                             __reactableMeta: true
                         });
                     break;
-                    
+                    case Thead:
+                    break;
                     default:
                         console.warn ('The only possible children of <Table>, are <Thead>, <Tr>, ' +
                                       'or one <Tfoot>.');
@@ -218,6 +219,11 @@ export class Table extends React.Component {
         this.updateCurrentSort(nextProps.sortBy);
         this.sortByCurrentSort();
         this.filterBy(nextProps.filterBy);
+        if (nextProps.currentPage !== this.state.currentPage) {
+            this.setState({
+                currentPage: nextProps.currentPage
+            })
+        }
     }
 
     applyFilter(filter, children) {
@@ -473,6 +479,7 @@ export class Table extends React.Component {
 }
 
 Table.defaultProps = {
+    currentPage: 0,
     sortBy: false,
     defaultSort: false,
     defaultSortDescending: false,

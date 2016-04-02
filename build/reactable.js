@@ -1019,7 +1019,7 @@ window.ReactDOM["default"] = window.ReactDOM;
             _get(Object.getPrototypeOf(Table.prototype), 'constructor', this).call(this, props);
 
             this.state = {
-                currentPage: 0,
+                currentPage: props.currentPage || 0,
                 currentSort: {
                     column: null,
                     direction: this.props.defaultSortDescending ? -1 : 1
@@ -1117,7 +1117,8 @@ window.ReactDOM["default"] = window.ReactDOM;
                                     __reactableMeta: true
                                 });
                                 break;
-
+                            case _thead.Thead:
+                                break;
                             default:
                                 console.warn('The only possible children of <Table>, are <Thead>, <Tr>, ' + 'or one <Tfoot>.');
                         }
@@ -1232,6 +1233,11 @@ window.ReactDOM["default"] = window.ReactDOM;
                 this.updateCurrentSort(nextProps.sortBy);
                 this.sortByCurrentSort();
                 this.filterBy(nextProps.filterBy);
+                if (nextProps.currentPage !== this.state.currentPage) {
+                    this.setState({
+                        currentPage: nextProps.currentPage
+                    });
+                }
             }
         }, {
             key: 'applyFilter',
@@ -1483,6 +1489,7 @@ window.ReactDOM["default"] = window.ReactDOM;
     exports.Table = Table;
 
     Table.defaultProps = {
+        currentPage: 0,
         sortBy: false,
         defaultSort: false,
         defaultSortDescending: false,
